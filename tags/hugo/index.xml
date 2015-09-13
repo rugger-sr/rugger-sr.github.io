@@ -204,6 +204,8 @@ tags = [&amp;quot;Hugo&amp;quot;, &amp;quot;Github&amp;quot;]
 &amp;gt; type CON &amp;gt; .gitignore
 draft/
 public/
+.*.swp
+.*.un~
 ^Z
 &amp;gt; git add -A
 &amp;gt; git commit -m &amp;quot;spec-R initial contents&amp;quot;
