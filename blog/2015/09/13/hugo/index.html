@@ -293,30 +293,30 @@ publicリポジトリのremoteに設定。</p>
 
 <p>以下の様な3つのバッチファイルを作成</p>
 
-<p>h_draft_server.bat
-<code>
-@echo '#### Hugo Draft Server : spec-R ####'
+<p>h_draft_server.bat</p>
+
+<pre><code>@echo '#### Hugo Draft Server : spec-R ####'
 @hugo server -D -w -t angels-ladder -d .\draft
-</code></p>
+</code></pre>
 
-<p>h_production_server.bat
-<code>
-@echo '#### Hugo Production Server : spec-R ####'
+<p>h_production_server.bat</p>
+
+<pre><code>@echo '#### Hugo Production Server : spec-R ####'
 @hugo server -w -t angels-ladder -d .\public
-</code></p>
+</code></pre>
 
-<p>h_publish.bat
-<code>
-@echo off
+<p>h_publish.bat</p>
+
+<pre><code>@echo off
 echo '#### Hugo publish : spec-R ####'
 hugo -t angels-ladder -d .\public
 cd public
-git add
+git add -A
 git commit -m &quot;site publish&quot;
 git push
 echo 'Site Published.'
 echo of
-</code></p>
+</code></pre>
 
 <p>記事の draft を false に設定して h_publish.bat を実行する。</p>
 

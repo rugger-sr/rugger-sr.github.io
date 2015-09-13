@@ -235,30 +235,30 @@ publicリポジトリのremoteに設定。&lt;/p&gt;
 
 &lt;p&gt;以下の様な3つのバッチファイルを作成&lt;/p&gt;
 
-&lt;p&gt;h_draft_server.bat
-&lt;code&gt;
-@echo &#39;#### Hugo Draft Server : spec-R ####&#39;
+&lt;p&gt;h_draft_server.bat&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@echo &#39;#### Hugo Draft Server : spec-R ####&#39;
 @hugo server -D -w -t angels-ladder -d .\draft
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;h_production_server.bat
-&lt;code&gt;
-@echo &#39;#### Hugo Production Server : spec-R ####&#39;
+&lt;p&gt;h_production_server.bat&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@echo &#39;#### Hugo Production Server : spec-R ####&#39;
 @hugo server -w -t angels-ladder -d .\public
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;h_publish.bat
-&lt;code&gt;
-@echo off
+&lt;p&gt;h_publish.bat&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@echo off
 echo &#39;#### Hugo publish : spec-R ####&#39;
 hugo -t angels-ladder -d .\public
 cd public
-git add
+git add -A
 git commit -m &amp;quot;site publish&amp;quot;
 git push
 echo &#39;Site Published.&#39;
 echo of
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;記事の draft を false に設定して h_publish.bat を実行する。&lt;/p&gt;
 
