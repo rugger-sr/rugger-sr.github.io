@@ -93,7 +93,7 @@ facebookは記録として残すようなイメージでも無いので、
 私（のロースペックPC）にはピッタリなので、これに決めた。</p>
 
 <p>次は静的サイトジェネレータ選び。
-.</p>
+記事生成の速さとgolangのプロジェクトであるという観点から<a href="http://gohugo.io/">Hugo</a>に決定。</p>
 
 <h2 id="hugoのインストール:978be23c11981924e1b317aebba4cbef">Hugoのインストール</h2>
 
@@ -228,21 +228,12 @@ title = &quot;&quot;
 
 </code></pre>
 
-<p>そして記事を生成する。</p>
+<p>そして記事を生成し、内容を更新する。</p>
 
 <pre><code>&gt; hugo new post\2015-09-13_Hugo.md
+(記事を記述)
 &gt; type .\content\post\2015-09-13_Hugo.md
 +++
-date = &quot;2015-09-13T11:27:33+09:00&quot;
-draft = true
-title = &quot;2015 09 13_Hugo&quot;
-
-+++
-</code></pre>
-
-<p>内容を更新</p>
-
-<pre><code>+++
 title = &quot;GitHub Pages + Hugo でブログ&quot;
 date = &quot;2015-09-13&quot;
 draft = true
@@ -250,6 +241,8 @@ slug = &quot;Hugo&quot;
 tags = [&quot;Hugo&quot;, &quot;Github&quot;]
 
 +++
+
+## gitリポジトリの作成とGitHubへのpush
 
 (以下内容)
 </code></pre>
@@ -274,7 +267,7 @@ public/
 &gt; git commit -m &quot;spec-R initial contents&quot;
 </code></pre>
 
-<p>こいつは、ローカル管理で良い（DropBox使ってるから安心？）。</p>
+<p>こいつは、ローカル管理で良い（DropBox使えば安心？）。</p>
 
 <p>次に、公開向けファイル生成し、こちらをGitHub Pagesにpushできるようにする。</p>
 
@@ -297,6 +290,41 @@ publicリポジトリのremoteに設定。</p>
 <p>そりゃ下書きですもんｗ</p>
 
 <h2 id="運用バッチファイルを作成:978be23c11981924e1b317aebba4cbef">運用バッチファイルを作成</h2>
+
+<p>以下の様な3つのバッチファイルを作成</p>
+
+<p>h_draft_server.bat
+<code>
+@echo '#### Hugo Draft Server : spec-R ####'
+@hugo server -D -w -t angels-ladder -d .\draft
+</code></p>
+
+<p>h_production_server.bat
+<code>
+@echo '#### Hugo Production Server : spec-R ####'
+@hugo server -w -t angels-ladder -d .\public
+</code></p>
+
+<p>h_publish.bat
+<code>
+@echo off
+echo '#### Hugo publish : spec-R ####'
+hugo -t angels-ladder -d .\public
+cd public
+git add
+git commit -m &quot;site publish&quot;
+git push
+echo 'Site Published.'
+echo of
+</code></p>
+
+<p>記事の draft を false に設定して h_publish.bat を実行する。</p>
+
+<p>んで、完成。</p>
+
+<p><a href="http://rugger-sr.github.io/">spec-R</a></p>
+
+<p>今後とも、よろしくお願いします。</p>
 
       
       

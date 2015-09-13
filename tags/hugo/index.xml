@@ -35,7 +35,7 @@ facebookは記録として残すようなイメージでも無いので、
 私（のロースペックPC）にはピッタリなので、これに決めた。&lt;/p&gt;
 
 &lt;p&gt;次は静的サイトジェネレータ選び。
-.&lt;/p&gt;
+記事生成の速さとgolangのプロジェクトであるという観点から&lt;a href=&#34;http://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;に決定。&lt;/p&gt;
 
 &lt;h2 id=&#34;hugoのインストール:978be23c11981924e1b317aebba4cbef&#34;&gt;Hugoのインストール&lt;/h2&gt;
 
@@ -170,21 +170,12 @@ title = &amp;quot;&amp;quot;
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;そして記事を生成する。&lt;/p&gt;
+&lt;p&gt;そして記事を生成し、内容を更新する。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&amp;gt; hugo new post\2015-09-13_Hugo.md
+(記事を記述)
 &amp;gt; type .\content\post\2015-09-13_Hugo.md
 +++
-date = &amp;quot;2015-09-13T11:27:33+09:00&amp;quot;
-draft = true
-title = &amp;quot;2015 09 13_Hugo&amp;quot;
-
-+++
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;内容を更新&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;+++
 title = &amp;quot;GitHub Pages + Hugo でブログ&amp;quot;
 date = &amp;quot;2015-09-13&amp;quot;
 draft = true
@@ -192,6 +183,8 @@ slug = &amp;quot;Hugo&amp;quot;
 tags = [&amp;quot;Hugo&amp;quot;, &amp;quot;Github&amp;quot;]
 
 +++
+
+## gitリポジトリの作成とGitHubへのpush
 
 (以下内容)
 &lt;/code&gt;&lt;/pre&gt;
@@ -216,7 +209,7 @@ public/
 &amp;gt; git commit -m &amp;quot;spec-R initial contents&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;こいつは、ローカル管理で良い（DropBox使ってるから安心？）。&lt;/p&gt;
+&lt;p&gt;こいつは、ローカル管理で良い（DropBox使えば安心？）。&lt;/p&gt;
 
 &lt;p&gt;次に、公開向けファイル生成し、こちらをGitHub Pagesにpushできるようにする。&lt;/p&gt;
 
@@ -239,6 +232,41 @@ publicリポジトリのremoteに設定。&lt;/p&gt;
 &lt;p&gt;そりゃ下書きですもんｗ&lt;/p&gt;
 
 &lt;h2 id=&#34;運用バッチファイルを作成:978be23c11981924e1b317aebba4cbef&#34;&gt;運用バッチファイルを作成&lt;/h2&gt;
+
+&lt;p&gt;以下の様な3つのバッチファイルを作成&lt;/p&gt;
+
+&lt;p&gt;h_draft_server.bat
+&lt;code&gt;
+@echo &#39;#### Hugo Draft Server : spec-R ####&#39;
+@hugo server -D -w -t angels-ladder -d .\draft
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;h_production_server.bat
+&lt;code&gt;
+@echo &#39;#### Hugo Production Server : spec-R ####&#39;
+@hugo server -w -t angels-ladder -d .\public
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;h_publish.bat
+&lt;code&gt;
+@echo off
+echo &#39;#### Hugo publish : spec-R ####&#39;
+hugo -t angels-ladder -d .\public
+cd public
+git add
+git commit -m &amp;quot;site publish&amp;quot;
+git push
+echo &#39;Site Published.&#39;
+echo of
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;記事の draft を false に設定して h_publish.bat を実行する。&lt;/p&gt;
+
+&lt;p&gt;んで、完成。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://rugger-sr.github.io/&#34;&gt;spec-R&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;今後とも、よろしくお願いします。&lt;/p&gt;
 </description>
     </item>
     
