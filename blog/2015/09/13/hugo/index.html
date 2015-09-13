@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="ja-JP">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    GitHub Pages &#43; Hugo でブログ | spec-R
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rugger-sr.github.io/blog/2015/09/13/hugo/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github-gist.min.css">
+  
+  
+  <link href="http://rugger-sr.github.io/index.xml" rel="alternate" type="application/rss+xml" title="spec-R" />
+  <link href="http://rugger-sr.github.io/index.xml" rel="feed" type="application/rss+xml" title="spec-R" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://rugger-sr.github.io/">spec-R</a></h1>
+        <h2>らが～の備忘録。</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="https://twitter.com/emi303" target="_blank">Twitter</a></li>
+          <li><a href="https://facebook.com/kouji.sekine" target="_blank">Facebook</a></li>
+          <li><a href="https://github.com/rugger.sr" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>GitHub Pages &#43; Hugo でブログ</h1>
+      <div class="meta">
+        Sep 13, 2015 &nbsp;
+        
+          #<a href="/tags/hugo">Hugo</a>&nbsp;
+        
+          #<a href="/tags/github">Github</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<h2 id="始めるにあたって:978be23c11981924e1b317aebba4cbef">始めるにあたって</h2>
+
+<p>twitterはほぼゲーム垢だし、
+facebookは記録として残すようなイメージでも無いので、
+個人的な技術メモ的な内容でブログを復活させてみようかと思い、物色。</p>
+
+<p>各種ホスティングサービスも考えたけど、
+<strong>広告とか広告とか広告</strong>なんかは少々ウザいし、
+お金払うのも勿体無い。</p>
+
+<p>とゆー経緯で探してみると、GitHubのPagesを使って静的ブログを運営する記事がちらほら。</p>
+
+<p>どうせ記事執筆はPCからだろうし、
+マシンスペック的にも複雑なjavascriptを使った管理サイトより、
+エディタでmarkdown記述&amp;CLIで運用できる仕組みは、
+私（のロースペックPC）にはピッタリなので、これに決めた。</p>
+
+<p>次は静的サイトジェネレータ選び。
+.</p>
+
+<h2 id="hugoのインストール:978be23c11981924e1b317aebba4cbef">Hugoのインストール</h2>
+
+<p>私のマシンはWindowsなので、
+<a href="https://github.com/spf13/hugo/releases">Hugoのリリース一覧</a>
+より hugo_0.14_windows_amd64.zip をダウンロード。</p>
+
+<p>アーカイブの中を覗いてみると</p>
+
+<pre><code>hugo_0.14_windows_amd64.exe
+license.md
+readme.md
+</code></pre>
+
+<p>の3つのみ。至ってシンプル。</p>
+
+<p>これを、C:\Hugo あたりに展開し、
+exe ファイルを hugo.exe という名前で複製してからPATHを通しておく。</p>
+
+<pre><code>&gt; hugo version
+Hugo Static Site Generator v0.14 BuildDate: 2015-05-26T01:29:16+09:00
+</code></pre>
+
+<p>ok.</p>
+
+<h2 id="作業ディレクトリの作成からサイト生成:978be23c11981924e1b317aebba4cbef">作業ディレクトリの作成からサイト生成</h2>
+
+<p>ブログ用の作業ディレクトリを作成して初期サイト生成。
+私はDropBox上に作った。</p>
+
+<pre><code>&gt; cd [work_dir]
+&gt; create new site spec-R
+&gt; cd spec-R
+&gt; tree
+フォルダー パスの一覧:  ボリューム Windows7_OS
+ボリューム シリアル番号は 00000200 8A06:F800 です
+C:.
+├─archetypes
+├─content
+├─data
+├─layouts
+└─static
+</code></pre>
+
+<p>new site しても無言だったので、最初何が起こったのか分からなかったｗ</p>
+
+<h2 id="テーマの設定とローカルサーバ稼働確認:978be23c11981924e1b317aebba4cbef">テーマの設定とローカルサーバ稼働確認</h2>
+
+<p>公式では、以下のコマンドで全部のテーマをインストールし、
+あとから不要なものを削除するとか書いてある。</p>
+
+<pre><code>&gt; git clone --recursive https://github.com/spf13/hugoThemes.git themes
+</code></pre>
+
+<p>私はシンプルでステキな<a href="https://github.com/tanksuzuki/">tanksuzuki</a>さんの
+<a href="https://github.com/tanksuzuki/angels-ladder">angels-ladder</a>というテーマを
+少々カスタマイズして利用させてもらい、
+慣れてきたら後で自作することにする。</p>
+
+<pre><code>&gt; md themes
+&gt; cd themes
+&gt; git clone https://github.com/tanksuzuki/angels-ladder angels-ladder
+&gt; cd ..
+&gt; hugo server -D -w -t angels-ladder -d .\draft
+...
+Serving pages from ...\spec-R\draft
+Web Server is available at http://127.0.0.1:1313/
+Press Ctrl+C to stop
+</code></pre>
+
+<p>-d の指定はジェネレータの出力ディレクトリ。
+デフォルトだと.\publicにできるのだけど、
+リリース時に下書き（draft）を消してくれないので、
+下書きとリリースのディレクトリを分けておく。</p>
+
+<p>ブラウザで<a href="http://localhost:1313/">http://localhost:1313/</a>を確認。
+無事稼働。</p>
+
+<h2 id="テーマの設定-カスタマイズ:978be23c11981924e1b317aebba4cbef">テーマの設定&amp;カスタマイズ</h2>
+
+<p>テーマの設定はブログのルートディレクトリに config.toml というファイルを作成して記述する。
+内容は<a href="https://github.com/tanksuzuki/angels-ladder#configuration">Configuration</a>からコピペ&amp;修正。</p>
+
+<pre><code>baseurl = &quot;http://rugger-sr.github.io/&quot;
+languageCode = &quot;ja-JP&quot;
+title = &quot;spec-R&quot;
+disqusShortname = &quot;らが～&quot;
+
+[Params]
+subtitle = &quot;らが～の備忘録。&quot;
+facebook = &quot;https://facebook.com/kouji.sekine&quot;
+twitter = &quot;https://twitter.com/emi303&quot;
+github = &quot;https://github.com/rugger.sr&quot;
+profile = &quot;/images/profile.png&quot;
+copyright = &quot;Written by らが～&quot;
+
+[Permalinks]
+post = &quot;/blog/:year/:month/:day/:slug/&quot;
+</code></pre>
+
+<p>特筆することは無いけれど、
+permalinkは /blog/年/月/日/slug/ と変更し、
+./static/images/profile.png に自分のアイコンをコピーしておく。</p>
+
+<p>また、このテーマはコードハイライトにhighlight.jsを利用しているので、
+jsの指定をCDNに切り替え、
+加えてgistを貼った時との親和性ｗからstyleをgithub-gistに変更しておく。</p>
+
+<pre><code>---- ...\themes\angels-ladder\layouts\partials\header.html ----
+- &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/highlight_monokai.css&quot;&gt;
++ &lt;link rel=&quot;stylesheet&quot; href=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github-gist.min.css&quot;&gt;
+
+---- ...\themes\angels-ladder\layouts\partials\footer.html ----
+- &lt;script src=&quot;/js/highlight.pack.js&quot;&gt;&lt;/script&gt;
++ &lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js&quot;&gt;&lt;/script&gt;  &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/theme.css&quot;&gt;
+</code></pre>
+
+<h2 id="記事作成:978be23c11981924e1b317aebba4cbef">記事作成</h2>
+
+<p>まず、記事投稿時の初期markdownテンプレートを定義できるらしいので、
+.\archetypes\default.md というファイルを作成し、
+以下のようにしておく</p>
+
+<pre><code>+++
+date = &quot;now()&quot;
+draft = true
+slug = &quot;&quot;
+tags = [&quot;&quot;, &quot;&quot;]
+title = &quot;&quot;
+
++++
+
+</code></pre>
+
+<p>そして記事を生成する。</p>
+
+<pre><code>&gt; hugo new post\2015-09-13_Hugo.md
+&gt; type .\content\post\2015-09-13_Hugo.md
++++
+date = &quot;2015-09-13T11:27:33+09:00&quot;
+draft = true
+title = &quot;2015 09 13_Hugo&quot;
+
++++
+</code></pre>
+
+<p>内容を更新</p>
+
+<pre><code>+++
+title = &quot;GitHub Pages + Hugo でブログ&quot;
+date = &quot;2015-09-13&quot;
+draft = true
+slug = &quot;Hugo&quot;
+tags = [&quot;Hugo&quot;, &quot;Github&quot;]
+
++++
+
+(以下内容)
+</code></pre>
+
+<p>そしてdraftサーバで確認する。</p>
+
+<pre><code>&gt; hugo server -w -D -t angels-ladder -d .\draft
+</code></pre>
+
+<p>ok.</p>
+
+<h2 id="gitリポジトリの作成とgithubへのpush:978be23c11981924e1b317aebba4cbef">gitリポジトリの作成とGitHubへのpush</h2>
+
+<p>まずブログ環境と記事md関連管理用のgitリポジトリを作成</p>
+
+<pre><code>&gt; git init
+&gt; type CON &gt; .gitignore
+draft/
+public/
+^Z
+&gt; git add -A
+&gt; git commit -m &quot;spec-R initial contents&quot;
+</code></pre>
+
+<p>こいつは、ローカル管理で良い（DropBox使ってるから安心？）。</p>
+
+<p>次に、公開向けファイル生成し、こちらをGitHub Pagesにpushできるようにする。</p>
+
+<pre><code>&gt; hugo -t angels-ladder -d .\public
+&gt; cd public
+&gt; git init
+&gt; git add -A
+&gt; git commit -m &quot;spec-R GitHub Pages initial contents&quot;
+</code></pre>
+
+<p>GitHubに rugger-sr.github.io という名称でリポジトリを作成し、
+publicリポジトリのremoteに設定。</p>
+
+<pre><code>&gt; git remote add origin https://github.com/rugger-sr/rugger-sr.github.io.git
+&gt; git push origin master
+</code></pre>
+
+<p>ブラウザで <a href="http://rugger-sr.github.io/">http://rugger-sr.github.io/</a> を確認…あれ？記事が表示されない…。</p>
+
+<p>そりゃ下書きですもんｗ</p>
+
+<h2 id="運用バッチファイルを作成:978be23c11981924e1b317aebba4cbef">運用バッチファイルを作成</h2>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside> 
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'らが～';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+  <nav class="pagination">
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/profile.png" width="64" height="64"><br>
+      Written by らが～
+    </div>
+  </footer>
+
+
+</div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>  <link rel="stylesheet" href="/css/theme.css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
