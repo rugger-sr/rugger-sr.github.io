@@ -240,13 +240,13 @@ publicリポジトリのremoteに設定。&lt;/p&gt;
 &lt;p&gt;h_draft_server.bat&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;@echo &#39;#### Hugo Draft Server : spec-R ####&#39;
-@hugo server -D -w -t angels-ladder -d .\draft
+@start hugo server -D -w -t angels-ladder -d .\draft
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;h_production_server.bat&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;@echo &#39;#### Hugo Production Server : spec-R ####&#39;
-@hugo server -w -t angels-ladder -d .\public
+@start hugo server -w -t angels-ladder -d .\public
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;h_publish.bat&lt;/p&gt;
