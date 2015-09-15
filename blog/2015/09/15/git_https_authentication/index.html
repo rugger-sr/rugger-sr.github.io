@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="ja-JP">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    https 経由の git 認証を自動化する for Windows | spec-R
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rugger-sr.github.io/blog/2015/09/15/git_https_authentication/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github-gist.min.css">
+  
+  
+  <link href="http://rugger-sr.github.io/index.xml" rel="alternate" type="application/rss+xml" title="spec-R" />
+  <link href="http://rugger-sr.github.io/index.xml" rel="feed" type="application/rss+xml" title="spec-R" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://rugger-sr.github.io/">spec-R</a></h1>
+        <h2>らが～の備忘録。</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="https://twitter.com/emi303" target="_blank">Twitter</a></li>
+          <li><a href="https://facebook.com/kouji.sekine" target="_blank">Facebook</a></li>
+          <li><a href="https://github.com/rugger-sr" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>https 経由の git 認証を自動化する for Windows</h1>
+      <div class="meta">
+        Sep 15, 2015 &nbsp;
+        
+          #<a href="/tags/git">git</a>&nbsp;
+        
+          #<a href="/tags/https">https</a>&nbsp;
+        
+          #<a href="/tags/windows">windows</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<h2 id="gitの認証:d094a7cc2a8916455815107f0b3ad339">gitの認証</h2>
+
+<p>ssh経由で鍵ペア作っておくのが一番楽なのだが、
+httpsで公開されているリポジトリの場合は、
+pushやpullの度に毎回ID/pwdを聞かれるのが<strong>鬱陶しい</strong>。</p>
+
+<p>そこでパスワードを記憶しておく方法を調べてみたところ、
+Windowsにもgitの認証を自動化するHelperを見つけたのでメモしておく。</p>
+
+<p><a href="http://gitcredentialstore.codeplex.com/">Windows Credential Store for Git</a></p>
+
+<h2 id="インストール手順:d094a7cc2a8916455815107f0b3ad339">インストール手順</h2>
+
+<ul>
+<li><p>上記サイトから git-credential-winstore.exe をダウンロード</p></li>
+
+<li><p>ダウンロードしたexeを直接実行</p></li>
+</ul>
+
+<p>git.exeへのPATHが通っていればそのまま実行。
+通って無ければ以下のように指定する。</p>
+
+<pre><code>&gt; git-credential-winstore.exe -i C:\Path\To\Git.exe
+</code></pre>
+
+<p>すると、以下の様なメッセージボックスが表示されるので「はい」を押す。</p>
+
+<p><img src="/images/2015-09-15_01.png" alt="git-credential-winstoreのメッセージボックス" />
+</p>
+
+<p>すると、C:\Users[username].gitconfig ファイルに以下の行が追記される。</p>
+
+<pre><code>[credential]
+	helper = !'C:\\Users\\[username]\\AppData\\Roaming\\GitCredStore\\git-credential-winstore.exe'
+</code></pre>
+
+<ul>
+<li>パスワードを設定する</li>
+</ul>
+
+<p>後はremoteにpushするなどして、いわゆるgitの認証が行われるように促すと…</p>
+
+<pre><code>&gt; git push
+</code></pre>
+
+<p>ヘルパが起動して以下の様な ID/pwd の入力画面が表示さるから、</p>
+
+<p><img src="/images/2015-09-15_02.png" alt="git-credential-winstoreのID/PWD入力画面" />
+</p>
+
+<p>対象アカウントを入力し「ok」を押せば設定完了。</p>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside> 
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'らが～';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+  <nav class="pagination">
+    
+      <span class="previous">&larr; <a href="http://rugger-sr.github.io/blog/2015/09/13/hugo/" rel="prev">GitHub Pages &#43; Hugo でブログ</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/profile.png" width="64" height="64"><br>
+      Written by らが～
+    </div>
+  </footer>
+
+
+</div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>  <link rel="stylesheet" href="/css/theme.css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

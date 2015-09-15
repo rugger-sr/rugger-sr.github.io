@@ -6,8 +6,70 @@
     <description>Recent content in Posts on spec-R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sun, 13 Sep 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 Sep 2015 18:08:13 +0900</lastBuildDate>
     <atom:link href="http://rugger-sr.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>https 経由の git 認証を自動化する for Windows</title>
+      <link>http://rugger-sr.github.io/blog/2015/09/15/git_https_authentication/</link>
+      <pubDate>Tue, 15 Sep 2015 18:08:13 +0900</pubDate>
+      
+      <guid>http://rugger-sr.github.io/blog/2015/09/15/git_https_authentication/</guid>
+      <description>
+
+&lt;h2 id=&#34;gitの認証:d094a7cc2a8916455815107f0b3ad339&#34;&gt;gitの認証&lt;/h2&gt;
+
+&lt;p&gt;ssh経由で鍵ペア作っておくのが一番楽なのだが、
+httpsで公開されているリポジトリの場合は、
+pushやpullの度に毎回ID/pwdを聞かれるのが&lt;strong&gt;鬱陶しい&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;そこでパスワードを記憶しておく方法を調べてみたところ、
+Windowsにもgitの認証を自動化するHelperを見つけたのでメモしておく。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://gitcredentialstore.codeplex.com/&#34;&gt;Windows Credential Store for Git&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール手順:d094a7cc2a8916455815107f0b3ad339&#34;&gt;インストール手順&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;上記サイトから git-credential-winstore.exe をダウンロード&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;ダウンロードしたexeを直接実行&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;git.exeへのPATHが通っていればそのまま実行。
+通って無ければ以下のように指定する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; git-credential-winstore.exe -i C:\Path\To\Git.exe
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;すると、以下の様なメッセージボックスが表示されるので「はい」を押す。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-09-15_01.png&#34; alt=&#34;git-credential-winstoreのメッセージボックス&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;すると、C:\Users[username].gitconfig ファイルに以下の行が追記される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[credential]
+	helper = !&#39;C:\\Users\\[username]\\AppData\\Roaming\\GitCredStore\\git-credential-winstore.exe&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;パスワードを設定する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;後はremoteにpushするなどして、いわゆるgitの認証が行われるように促すと…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; git push
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ヘルパが起動して以下の様な ID/pwd の入力画面が表示さるから、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-09-15_02.png&#34; alt=&#34;git-credential-winstoreのID/PWD入力画面&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;対象アカウントを入力し「ok」を押せば設定完了。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>GitHub Pages &#43; Hugo でブログ</title>
