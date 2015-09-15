@@ -259,7 +259,7 @@ git add -A
 git commit -m &amp;quot;site publish&amp;quot;
 git push
 echo &#39;Site Published.&#39;
-echo of
+echo on
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;記事の draft を false に設定して h_publish.bat を実行する。&lt;/p&gt;
