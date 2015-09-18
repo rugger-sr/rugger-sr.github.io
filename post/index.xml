@@ -6,8 +6,151 @@
     <description>Recent content in Posts on spec-R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 15 Sep 2015 18:08:13 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2015 18:24:42 +0900</lastBuildDate>
     <atom:link href="http://rugger-sr.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Windowsのコマンドプロンプトをカスタマイズする</title>
+      <link>http://rugger-sr.github.io/blog/2015/09/18/commandprompt/</link>
+      <pubDate>Fri, 18 Sep 2015 18:24:42 +0900</pubDate>
+      
+      <guid>http://rugger-sr.github.io/blog/2015/09/18/commandprompt/</guid>
+      <description>
+
+&lt;h2 id=&#34;そもそもコマンドプロンプトって:b645646fe2056628a0b19adc6924025a&#34;&gt;そもそもコマンドプロンプトって？&lt;/h2&gt;
+
+&lt;p&gt;[WindowsKey]+[R] 押して &amp;ldquo;cmd&amp;rdquo; と入力して [Enter] すると起動するアレ。&lt;/p&gt;
+
+&lt;p&gt;（スタートボタンから「コマンドプロンプト」を探してクリックしても起動しますが…）&lt;/p&gt;
+
+&lt;p&gt;起動直後はこんな感じで表示されるハズ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Microsoft Windows [Version 10.0.10240]
+(c) 2015 Microsoft Corporation. All rights reserved.
+
+C:\Users\rugger&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;見辛いんだよね:b645646fe2056628a0b19adc6924025a&#34;&gt;見辛いんだよね～&lt;/h2&gt;
+
+&lt;p&gt;入力を促すプロンプトですが、デフォルトだと&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;[カレントディレクトリ]&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;となっているので、
+使っているとフォルダ階層が深くなった時に非常に見辛くなる。&lt;/p&gt;
+
+&lt;p&gt;例えば VisualStudio付属のMFCソースディレクトリに行くと（&lt;strong&gt;行くのか？&lt;/strong&gt;）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\atlmfc\src\mfc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とかなってしまい、そこでソースファイルを表示しようとすると（&lt;strong&gt;するのか？&lt;/strong&gt;）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\atlmfc\src\mfc&amp;gt;type afxas
+ert.cpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;といった形で入力中に改行されてしまい、かなり&lt;strong&gt;モニョる&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;はいそこ、「どーせコマンドなんてコピペするから気にならん…」とか言わない。&lt;/p&gt;
+
+&lt;h2 id=&#34;表示をカスタマイズする:b645646fe2056628a0b19adc6924025a&#34;&gt;表示をカスタマイズする&lt;/h2&gt;
+
+&lt;p&gt;実はこのプロンプト表示はカスタマイズできる。&lt;/p&gt;
+
+&lt;p&gt;おそらく、皆知っているが面倒だから設定などしないと思う。&lt;/p&gt;
+
+&lt;p&gt;だが私は、MS-DOSの頃からこのプロンプトをカスタマイズして使っている。&lt;/p&gt;
+
+&lt;p&gt;ちなみにこんな感じ&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;=&amp;gt; C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\atlmfc\src\mfc
+$ type afxasert.cpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;うん見易い。（&lt;strong&gt;よね？&lt;/strong&gt;）&lt;/p&gt;
+
+&lt;p&gt;カレントディレクトリの後ろに改行を入れて、
+コマンド入力が左端に揃うようになっているだけなのだが、
+個人的に凄く気に入っている。
+ちなみに昔はエスケープシーケンスで色付けとかしていたが、
+今は面倒なのでやっていないｗ&lt;/p&gt;
+
+&lt;p&gt;で、どうやるのか。&lt;/p&gt;
+
+&lt;p&gt;コマンドプロンプトからそのまま prompt というコマンドで設定する。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/free/NT/WinKeyWord/20040805/1/prompt.shtml&#34;&gt;Windowsコマンド集：（prompt）&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ちなみに、私と同じ表示を行う為には以下のようにすれば良い。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;prompt $Q$g$S$p$_$$$S&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;でもこれだけだと、毎回コマンドプロンプトを開く度に実行しなければならない。
+MS-DOSの頃は AUTOEXEC.BAT とかに書いておけば良かったものの、
+32bit以降のWindowsでは存在しない。&lt;/p&gt;
+
+&lt;p&gt;そこで、レジストリの設定を行う。&lt;/p&gt;
+
+&lt;h2 id=&#34;レジストリの設定:b645646fe2056628a0b19adc6924025a&#34;&gt;レジストリの設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;ここからの変更は自己責任でお願いします。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;コマンドプロンプトの各種設定は、&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;HKEY_CURRENT_USER\Software\Microsoft\Command Processor&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;というキーに保存されている。&lt;/p&gt;
+
+&lt;p&gt;[WidowsKey]+[R] から &amp;ldquo;regedit&amp;rdquo; [Enter] とするとレジストリエディタが起動するので、
+このキーの &amp;ldquo;AutoRun&amp;rdquo; という名前の文字列パラメータを開き（無ければ新規で作る）、
+値として &amp;ldquo;prompt [&amp;hellip;]&amp;rdquo; といった文字列を設定する。&lt;/p&gt;
+
+&lt;p&gt;これで、コマンドプロンプトを起動する度にこのコマンドが実行され、表示が適用される。&lt;/p&gt;
+
+&lt;h2 id=&#34;regファイル作っちゃえば:b645646fe2056628a0b19adc6924025a&#34;&gt;regファイル作っちゃえば？&lt;/h2&gt;
+
+&lt;p&gt;仕事でPCを使っていると、結構頻繁にマシンが入れ替わる。&lt;/p&gt;
+
+&lt;p&gt;その度にこんな設定を行うのは面倒くさい。&lt;/p&gt;
+
+&lt;p&gt;ということで、reg ファイルを作成する。&lt;/p&gt;
+
+&lt;p&gt;レジストリの詳細は &lt;a href=&#34;https://technet.microsoft.com/en-us/library/cc951805.aspx&#34;&gt;Command Processor&lt;/a&gt;
+を確認してもらうとして、普段私が利用している reg ファイルを紹介する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Command Processor]
+&amp;quot;AutoRun&amp;quot;=&amp;quot;prompt $Q$g$S$p$_$$$S&amp;quot;
+&amp;quot;CompletionChar&amp;quot;=dword:00000009
+&amp;quot;DefaultColor&amp;quot;=dword:00000000
+&amp;quot;EnableExtensions&amp;quot;=dword:00000001
+&amp;quot;PathCompletionChar&amp;quot;=dword:00000009
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意点としては、
+このファイルは文字コードUTF-16で保存しなければならないということ。&lt;/p&gt;
+
+&lt;p&gt;一番簡単なのは「メモ帳」で「名前を付けて保存」から
+「文字コード」を &amp;ldquo;Unicode&amp;rdquo; として保存する。これでok。&lt;/p&gt;
+
+&lt;p&gt;逆にレジストリエディタの該当キーを右クリックして「エクスポート」し、
+そのファイルをメモ帳で編集する方が確実かも。いずれかお好きな方法で。&lt;/p&gt;
+
+&lt;p&gt;こんなファイルをcmd.regとかいうファイル名で保存しておけば、
+このファイルをエクスプローラからダブルクリックするだけで設定が可能になる。&lt;/p&gt;
+
+&lt;p&gt;では、みなさん素敵なCLIライフを♪&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>https 経由の git 認証を自動化する for Windows</title>
