@@ -444,17 +444,28 @@ publicリポジトリのremoteに設定。&lt;/p&gt;
 
 &lt;p&gt;h_draft_server.bat&lt;/p&gt;
 
+&lt;p&gt;下書きを有効（-D）にしたドラフトサーバを起動する。
+コンテンツ（*.md）の更新などもすぐに反映される（-w）ので便利。
+生成される静的ファイルは、公開用と間違えないように
+.\draftディレクトリ以下に生成（-d）している。
+起動するWEBサーバのポートは1313固定みたいだ。&lt;/p&gt;
+
 &lt;pre&gt;&lt;code&gt;@echo &#39;#### Hugo Draft Server : spec-R ####&#39;
 @start hugo server -D -w -t angels-ladder -d .\draft
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;h_production_server.bat&lt;/p&gt;
 
+&lt;p&gt;下書きを無効にしたローカルサーバを起動する。
+基本的にはdraftと同じだが、出力ディレクトリを .\public とする。&lt;/p&gt;
+
 &lt;pre&gt;&lt;code&gt;@echo &#39;#### Hugo Production Server : spec-R ####&#39;
 @start hugo server -w -t angels-ladder -d .\public
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;h_publish.bat&lt;/p&gt;
+
+&lt;p&gt;コンテンツをビルドし、更新された内容をGitHubにpushするバッチ。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;@echo off
 echo &#39;#### Hugo publish : spec-R ####&#39;
@@ -467,7 +478,8 @@ echo &#39;Site Published.&#39;
 echo on
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;記事の draft を false に設定して h_publish.bat を実行する。&lt;/p&gt;
+&lt;p&gt;ここまで作ったら、先のmd冒頭にある draft を false に設定して
+h_publish.bat を実行する。&lt;/p&gt;
 
 &lt;p&gt;んで、完成。&lt;/p&gt;
 
