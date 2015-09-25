@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="ja-JP">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    WEB フロントエンドフレームワーク | spec-R
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rugger-sr.github.io/blog/2015/09/26/web_frontend/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github-gist.min.css">
+  
+  
+  <link href="http://rugger-sr.github.io/index.xml" rel="alternate" type="application/rss+xml" title="spec-R" />
+  <link href="http://rugger-sr.github.io/index.xml" rel="feed" type="application/rss+xml" title="spec-R" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://rugger-sr.github.io/">spec-R</a></h1>
+        <h2>らが～の備忘録。</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="https://twitter.com/emi303" target="_blank">Twitter</a></li>
+          <li><a href="https://facebook.com/kouji.sekine" target="_blank">Facebook</a></li>
+          <li><a href="https://github.com/rugger-sr" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>WEB フロントエンドフレームワーク</h1>
+      <div class="meta">
+        Sep 26, 2015 &nbsp;
+        
+          #<a href="/tags/web">web</a>&nbsp;
+        
+          #<a href="/tags/javascript">javascript</a>&nbsp;
+        
+          #<a href="/tags/react.js">React.js</a>&nbsp;
+        
+          #<a href="/tags/vue.js">Vue.js</a>&nbsp;
+        
+          #<a href="/tags/aurelia.js">Aurelia.js</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<h2 id="今時のwebフロントエンド実装:4d18cf528cb7d140af4f0ffb0cec8cec">今時のWEBフロントエンド実装</h2>
+
+<p>これまでWEBフロントエンドといえば、</p>
+
+<ul>
+<li>javascriptといえばjQuery</li>
+<li>cssといえば bootstrap</li>
+</ul>
+
+<p>という古臭い私ｗ</p>
+
+<p>ASP.NET MVC で利用されていた knockout.js もちょっと触ったくらいで
+特に入れ込んで利用してきたわけではなかった。</p>
+
+<p>ここんとこGoを触っていて、
+バックエンドは Martini やら AppEngine でイケそうな感触なので、
+どうせならフロントエンドもモダンなものを覚えようかと調べ始めた。</p>
+
+<p>それにしても、色々と乱立していて困るｗ</p>
+
+<h2 id="javascript上位言語:4d18cf528cb7d140af4f0ffb0cec8cec">javascript上位言語</h2>
+
+<p>いわゆる、javascriptの言語仕様に限界を感じたベンダが、
+「コンパイルすればjavascriptとなる言語」
+を模索しているようだ。</p>
+
+<ul>
+<li>CofeeScript</li>
+<li>TypeScript</li>
+<li>Dart</li>
+</ul>
+
+<p>記述するには Dart が好みだけどVMをブラウザに搭載するのを諦めたぽいので、
+この中で筋が良さそうなのは ES6 をベースとしている TypeScript だろうか。</p>
+
+<p>要コンパイルと言っても、
+タスク自動化ツール等もある昨今だと、
+特にデメリットにはならないかもしれない。</p>
+
+<p>まぁ、必要があれば覚えてみようかな？
+レベルで頭に留めておく。</p>
+
+<h2 id="ほにゃらら-js:4d18cf528cb7d140af4f0ffb0cec8cec">ほにゃらら.js</h2>
+
+<ul>
+<li>Backbone.js</li>
+<li>knockout.js</li>
+<li>Angular.js</li>
+<li>React.js</li>
+<li>Reactive.js</li>
+<li>Vue.js</li>
+<li>&hellip;</li>
+</ul>
+
+<p>多いよ（怒）</p>
+
+<p>最近はパッケージマネージャとして npm を使うケースが増えている。
+本来はサーバサイドで動く node.js に関連するモジュールの管理に使っていたものが、
+いつの間にかjavascriptパッケージマネージャのデファクトのように扱われているみたいだ。</p>
+
+<p>一応、node.js はインストールしているので困ることは無いが、
+残念ながら殆ど使っていないｗし、
+あまり依存関係が複雑なのを好まない私としては、
+Vue.js あたりをCDNで直接指定するのがシンプルで良いかもしれない。</p>
+
+<p>もう一つ、モダン且つシンプルで今後流行りそうなのが、</p>
+
+<p><a href="http://aurelia.io/">Aurelia.js</a></p>
+
+<p>である。</p>
+
+<p>Angular.js からES6/7を見据えて再設計した感じで、
+テンプレートの記述も素のhtmlに近いから、
+デザイナーと連携して事を進めている場合は特に重宝しそう。</p>
+
+<p>今一番ホットなフレームワークかもしれない。</p>
+
+<h2 id="んで-お前はどうするんだよ:4d18cf528cb7d140af4f0ffb0cec8cec">んで、お前はどうするんだよ！</h2>
+
+<p>個人的に使うにはUIが楽に構築できれば良いので、
+Vue.js や React.js あたりにしようかと思っている。</p>
+
+<p>ちょっと残念なのが、テンプレートに埋め込むときに &ldquo;{{&hellip;}}&rdquo; とするので、
+Go の template とバッティングするところかな…。
+Go 側でカスタマイズできるみたいなので、そっちで逃げるのも手か。</p>
+
+<p>そして今後仕事である程度の規模が必要になることも有ると思うので、
+Angular.js や Aurelia.js あたりにも慣れておけば、
+いざって時に慌てないで済みそうだ。</p>
+
+<p>そういえば、Google Closure Library はどこ行ったんだろ？
+あまり使われていないのかな？
+個人的に期待していたのだけど、導入が面倒なのでまだ手を出していない。
+最近リリースなどもあまり出していないみたいで、
+ニュースに載ることもめっきり減っているような気がするなぁ。</p>
+
+<p>こいつも後で調べてみるか…。</p>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside> 
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'らが～';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+  <nav class="pagination">
+    
+      <span class="previous">&larr; <a href="http://rugger-sr.github.io/blog/2015/09/18/commandprompt/" rel="prev">Windowsのコマンドプロンプトをカスタマイズする</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/profile.png" width="64" height="64"><br>
+      Written by らが～
+    </div>
+  </footer>
+
+
+</div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>  <link rel="stylesheet" href="/css/theme.css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-67799162-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

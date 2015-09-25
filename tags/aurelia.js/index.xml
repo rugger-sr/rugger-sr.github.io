@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Aurelia.Js on spec-R</title>
+    <link>http://rugger-sr.github.io/tags/aurelia/index.js/</link>
+    <description>Recent content in Aurelia.Js on spec-R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <lastBuildDate>Sat, 26 Sep 2015 00:06:52 +0900</lastBuildDate>
+    <atom:link href="http://rugger-sr.github.io/tags/aurelia.js/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>WEB フロントエンドフレームワーク</title>
+      <link>http://rugger-sr.github.io/blog/2015/09/26/web_frontend/</link>
+      <pubDate>Sat, 26 Sep 2015 00:06:52 +0900</pubDate>
+      
+      <guid>http://rugger-sr.github.io/blog/2015/09/26/web_frontend/</guid>
+      <description>
+
+&lt;h2 id=&#34;今時のwebフロントエンド実装:4d18cf528cb7d140af4f0ffb0cec8cec&#34;&gt;今時のWEBフロントエンド実装&lt;/h2&gt;
+
+&lt;p&gt;これまでWEBフロントエンドといえば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;javascriptといえばjQuery&lt;/li&gt;
+&lt;li&gt;cssといえば bootstrap&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;という古臭い私ｗ&lt;/p&gt;
+
+&lt;p&gt;ASP.NET MVC で利用されていた knockout.js もちょっと触ったくらいで
+特に入れ込んで利用してきたわけではなかった。&lt;/p&gt;
+
+&lt;p&gt;ここんとこGoを触っていて、
+バックエンドは Martini やら AppEngine でイケそうな感触なので、
+どうせならフロントエンドもモダンなものを覚えようかと調べ始めた。&lt;/p&gt;
+
+&lt;p&gt;それにしても、色々と乱立していて困るｗ&lt;/p&gt;
+
+&lt;h2 id=&#34;javascript上位言語:4d18cf528cb7d140af4f0ffb0cec8cec&#34;&gt;javascript上位言語&lt;/h2&gt;
+
+&lt;p&gt;いわゆる、javascriptの言語仕様に限界を感じたベンダが、
+「コンパイルすればjavascriptとなる言語」
+を模索しているようだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CofeeScript&lt;/li&gt;
+&lt;li&gt;TypeScript&lt;/li&gt;
+&lt;li&gt;Dart&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;記述するには Dart が好みだけどVMをブラウザに搭載するのを諦めたぽいので、
+この中で筋が良さそうなのは ES6 をベースとしている TypeScript だろうか。&lt;/p&gt;
+
+&lt;p&gt;要コンパイルと言っても、
+タスク自動化ツール等もある昨今だと、
+特にデメリットにはならないかもしれない。&lt;/p&gt;
+
+&lt;p&gt;まぁ、必要があれば覚えてみようかな？
+レベルで頭に留めておく。&lt;/p&gt;
+
+&lt;h2 id=&#34;ほにゃらら-js:4d18cf528cb7d140af4f0ffb0cec8cec&#34;&gt;ほにゃらら.js&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Backbone.js&lt;/li&gt;
+&lt;li&gt;knockout.js&lt;/li&gt;
+&lt;li&gt;Angular.js&lt;/li&gt;
+&lt;li&gt;React.js&lt;/li&gt;
+&lt;li&gt;Reactive.js&lt;/li&gt;
+&lt;li&gt;Vue.js&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;多いよ（怒）&lt;/p&gt;
+
+&lt;p&gt;最近はパッケージマネージャとして npm を使うケースが増えている。
+本来はサーバサイドで動く node.js に関連するモジュールの管理に使っていたものが、
+いつの間にかjavascriptパッケージマネージャのデファクトのように扱われているみたいだ。&lt;/p&gt;
+
+&lt;p&gt;一応、node.js はインストールしているので困ることは無いが、
+残念ながら殆ど使っていないｗし、
+あまり依存関係が複雑なのを好まない私としては、
+Vue.js あたりをCDNで直接指定するのがシンプルで良いかもしれない。&lt;/p&gt;
+
+&lt;p&gt;もう一つ、モダン且つシンプルで今後流行りそうなのが、&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://aurelia.io/&#34;&gt;Aurelia.js&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;である。&lt;/p&gt;
+
+&lt;p&gt;Angular.js からES6/7を見据えて再設計した感じで、
+テンプレートの記述も素のhtmlに近いから、
+デザイナーと連携して事を進めている場合は特に重宝しそう。&lt;/p&gt;
+
+&lt;p&gt;今一番ホットなフレームワークかもしれない。&lt;/p&gt;
+
+&lt;h2 id=&#34;んで-お前はどうするんだよ:4d18cf528cb7d140af4f0ffb0cec8cec&#34;&gt;んで、お前はどうするんだよ！&lt;/h2&gt;
+
+&lt;p&gt;個人的に使うにはUIが楽に構築できれば良いので、
+Vue.js や React.js あたりにしようかと思っている。&lt;/p&gt;
+
+&lt;p&gt;ちょっと残念なのが、テンプレートに埋め込むときに &amp;ldquo;{{&amp;hellip;}}&amp;rdquo; とするので、
+Go の template とバッティングするところかな…。
+Go 側でカスタマイズできるみたいなので、そっちで逃げるのも手か。&lt;/p&gt;
+
+&lt;p&gt;そして今後仕事である程度の規模が必要になることも有ると思うので、
+Angular.js や Aurelia.js あたりにも慣れておけば、
+いざって時に慌てないで済みそうだ。&lt;/p&gt;
+
+&lt;p&gt;そういえば、Google Closure Library はどこ行ったんだろ？
+あまり使われていないのかな？
+個人的に期待していたのだけど、導入が面倒なのでまだ手を出していない。
+最近リリースなどもあまり出していないみたいで、
+ニュースに載ることもめっきり減っているような気がするなぁ。&lt;/p&gt;
+
+&lt;p&gt;こいつも後で調べてみるか…。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

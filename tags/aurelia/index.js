@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    Posts | spec-R
+    Aurelia.Js | spec-R
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://rugger-sr.github.io/post/"/>
+  <link rel="canonical" href="http://rugger-sr.github.io/tags/aurelia/index.js/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -61,7 +61,7 @@
 
   
   <main id="list" role="main">
-    <div class="article-header light-gray"><h1>#Posts</h1></div>
+    <div class="article-header light-gray"><h1>#Aurelia.Js</h1></div>
     
     <div class="summary">
       <h2><a href="http://rugger-sr.github.io/blog/2015/09/26/web_frontend/">WEB フロントエンドフレームワーク </a></h2>
@@ -77,48 +77,6 @@
           #<a href="/tags/vue.js">Vue.js</a>&nbsp;
         
           #<a href="/tags/aurelia.js">Aurelia.js</a>&nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://rugger-sr.github.io/blog/2015/09/18/commandprompt/">Windowsのコマンドプロンプトをカスタマイズする </a></h2>
-      <div class="meta">
-        Sep 18, 2015 &nbsp;
-        
-          #<a href="/tags/windows">Windows</a>&nbsp;
-        
-          #<a href="/tags/cmd">CMD</a>&nbsp;
-        
-          #<a href="/tags/prompt">Prompt</a>&nbsp;
-        
-          #<a href="/tags/cli">CLI</a>&nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://rugger-sr.github.io/blog/2015/09/15/git_https_authentication/">https 経由の git 認証を自動化する for Windows </a></h2>
-      <div class="meta">
-        Sep 15, 2015 &nbsp;
-        
-          #<a href="/tags/git">Git</a>&nbsp;
-        
-          #<a href="/tags/https">https</a>&nbsp;
-        
-          #<a href="/tags/windows">Windows</a>&nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://rugger-sr.github.io/blog/2015/09/13/hugo/">GitHub Pages &#43; Hugo でブログ </a></h2>
-      <div class="meta">
-        Sep 13, 2015 &nbsp;
-        
-          #<a href="/tags/hugo">Hugo</a>&nbsp;
-        
-          #<a href="/tags/github">Github</a>&nbsp;
         
       </div>
     </div>
