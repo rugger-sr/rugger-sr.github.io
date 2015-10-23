@@ -6,8 +6,182 @@
     <description>Recent content on spec-R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sat, 26 Sep 2015 00:06:52 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 23 Oct 2015 20:08:24 +0900</lastBuildDate>
     <atom:link href="http://rugger-sr.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Chrome拡張で状態を保持したままページ遷移する</title>
+      <link>http://rugger-sr.github.io/blog/2015/10/23/chrome%E6%8B%A1%E5%BC%B5%E3%81%A7%E7%8A%B6%E6%85%8B%E3%82%92%E4%BF%9D%E6%8C%81%E3%81%97%E3%81%9F%E3%81%BE%E3%81%BE%E3%83%9A%E3%83%BC%E3%82%B8%E9%81%B7%E7%A7%BB%E3%81%99%E3%82%8B/</link>
+      <pubDate>Fri, 23 Oct 2015 20:08:24 +0900</pubDate>
+      
+      <guid>http://rugger-sr.github.io/blog/2015/10/23/chrome%E6%8B%A1%E5%BC%B5%E3%81%A7%E7%8A%B6%E6%85%8B%E3%82%92%E4%BF%9D%E6%8C%81%E3%81%97%E3%81%9F%E3%81%BE%E3%81%BE%E3%83%9A%E3%83%BC%E3%82%B8%E9%81%B7%E7%A7%BB%E3%81%99%E3%82%8B/</guid>
+      <description>
+
+&lt;h2 id=&#34;chrome拡張でトグルボタン:38b31bf80c1d56d077e222c704c5e009&#34;&gt;Chrome拡張でトグルボタン&lt;/h2&gt;
+
+&lt;p&gt;ここ暫くChrome拡張を弄っているのだが、
+ツールバーのボタンを押すことで状態を切り替えられるような機能を実験してみたのでメモしておく。&lt;/p&gt;
+
+&lt;h2 id=&#34;browser-action:38b31bf80c1d56d077e222c704c5e009&#34;&gt;browser_action&lt;/h2&gt;
+
+&lt;p&gt;今回作成するのはツールバーのボタンである。&lt;/p&gt;
+
+&lt;p&gt;適当なディレクトリを作成して以下の3つのファイルを作成する。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;manifest.json&lt;/li&gt;
+&lt;li&gt;background.js&lt;/li&gt;
+&lt;li&gt;content.js&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;内部でjQueryを利用する場合はこちらも含めておく。
+現行の最新は2.1.4だった。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;jquery-2.1.4.min.js&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;それぞれのファイルを以下のようにする&lt;/p&gt;
+
+&lt;h3 id=&#34;manifest-json:38b31bf80c1d56d077e222c704c5e009&#34;&gt;manifest.json&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;manifest_version&amp;quot;: 2,
+    &amp;quot;name&amp;quot;: &amp;quot;Chrome Extension Sapmle&amp;quot;,
+    &amp;quot;description&amp;quot;: &amp;quot;Chrome拡張のサンプルです。&amp;quot;,
+    &amp;quot;version&amp;quot;: &amp;quot;1.0&amp;quot;,
+    &amp;quot;permissions&amp;quot;: [
+        &amp;quot;activeTab&amp;quot;,
+        &amp;quot;tabs&amp;quot;
+    ],
+    &amp;quot;background&amp;quot;: {
+        &amp;quot;scripts&amp;quot;: [&amp;quot;background.js&amp;quot;],
+        &amp;quot;persistent&amp;quot;: true
+    },
+    &amp;quot;content_scripts&amp;quot;: [
+    {
+        &amp;quot;matches&amp;quot;: [ &amp;quot;&amp;lt;all_urls&amp;gt;&amp;quot; ],
+        &amp;quot;js&amp;quot;: [&amp;quot;jquery-2.1.4.min.js&amp;quot;, &amp;quot;content.js&amp;quot;]
+    }
+    ],
+    &amp;quot;browser_action&amp;quot;: {
+        &amp;quot;default_title&amp;quot;: &amp;quot;Chrome Extension Sapmle&amp;quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;background-js:38b31bf80c1d56d077e222c704c5e009&#34;&gt;background.js&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;// 状態保持
+var isTranslate = false;
+
+// ボタンが押されたら、状態を入れ替えてリロードする
+chrome.browserAction.onClicked.addListener(function(tab) {
+    isTranslate = !isTranslate;
+
+    // 状態をバッチとして表示する
+    if (isTranslate)
+        chrome.browserAction.setBadgeText({text : &amp;quot;ON&amp;quot; });
+    else
+        chrome.browserAction.setBadgeText({text: &amp;quot;&amp;quot;});
+
+    chrome.tabs.reload(tab.id);
+});
+
+// contents_scriptからのメッセージ処理
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (isTranslate) {
+            switch (request.cmd) {
+                case &amp;quot;isTranslate&amp;quot;: // 状態の取得
+                    sendResponse(isTranslate);
+                    return;
+                default:
+                    break;
+            }
+        }
+        sendResponse(&amp;quot;&amp;quot;);
+    }
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;content-js:38b31bf80c1d56d077e222c704c5e009&#34;&gt;content.js&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).ready(function(){
+    // ページロードの度にbackgroundに状態を確認
+    chrome.runtime.sendMessage(
+        { cmd: &amp;quot;isTranslate&amp;quot; },
+        function(isTranslate) {
+            if (isTranslate) {
+                // 有効だったら変換処理（&amp;quot;spec-R&amp;quot; を &amp;quot;SPEC-R&amp;quot; に置換ｗ）
+                var r = document.documentElement.innerHTML.replace(/spec-R/g, &amp;quot;SPEC-R&amp;quot;);
+                document.documentElement.innerHTML = r;
+            }
+        }
+    );
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;作成した拡張をchromeに追加する:38b31bf80c1d56d077e222c704c5e009&#34;&gt;作成した拡張をChromeに追加する&lt;/h2&gt;
+
+&lt;p&gt;（あくまでも開発モードです）&lt;/p&gt;
+
+&lt;p&gt;Chromeの設定から「拡張機能」画面に移動する。&lt;/p&gt;
+
+&lt;p&gt;右上の「ディベロッパーモード」のチェックをONにして、
+「パッケージ化されていない拡張機能を読み込む&amp;hellip;」ボタンを押し、
+さっき作成したディレクトリを指定することで以下のようになるはず。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-10-23_01.png&#34; alt=&#34;Chrome拡張機能設定画面&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;これで拡張が使えるようになった。&lt;/p&gt;
+
+&lt;h2 id=&#34;確認:38b31bf80c1d56d077e222c704c5e009&#34;&gt;確認&lt;/h2&gt;
+
+&lt;p&gt;まず無効状態。
+ちなみに三本線ボタンの左側にあるジグソーのピースみたいな奴が今回作った拡張のボタン。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-10-23_02.png&#34; alt=&#34;無効状態&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;有効にしてみる。バッジがかわいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-10-23_03.png&#34; alt=&#34;有効状態&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;ページ遷移しても有効になってる？&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-10-23_04.png&#34; alt=&#34;ページ遷移後&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;また無効にする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rugger-sr.github.io/images/2015-10-23_05.png&#34; alt=&#34;無効に戻す&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;意外と楽ちん。&lt;/p&gt;
+
+&lt;h2 id=&#34;今後は:38b31bf80c1d56d077e222c704c5e009&#34;&gt;今後は？&lt;/h2&gt;
+
+&lt;p&gt;これでツールバーボタンのステートは複数のウィンドウでも維持されるが、
+内容はカレントウィンドウ（のタブ）しか変わらない。&lt;/p&gt;
+
+&lt;p&gt;まぁ、今回は実験なので詰めは甘いが、
+background.jsから状態遷移時に他のタブに通知するとか、
+特定のタブ毎に状態を持つとか、
+色々対応の方法はあると思う。&lt;/p&gt;
+
+&lt;p&gt;次回は、拡張から外部APIを呼んで見る予定。&lt;/p&gt;
+
+&lt;h2 id=&#34;雑感:38b31bf80c1d56d077e222c704c5e009&#34;&gt;雑感&lt;/h2&gt;
+
+&lt;p&gt;今後Edgeの拡張もChrome互換になるという話もあるし、
+この手のノウハウは溜めておいて損は無いと思う。&lt;/p&gt;
+
+&lt;p&gt;というか、思ったより簡単に対応できるので楽しくなってきたｗ&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>WEB フロントエンドフレームワーク</title>

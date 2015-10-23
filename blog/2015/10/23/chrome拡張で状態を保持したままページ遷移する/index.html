@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="ja-JP">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Chrome拡張で状態を保持したままページ遷移する | spec-R
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rugger-sr.github.io/blog/2015/10/23/chrome%E6%8B%A1%E5%BC%B5%E3%81%A7%E7%8A%B6%E6%85%8B%E3%82%92%E4%BF%9D%E6%8C%81%E3%81%97%E3%81%9F%E3%81%BE%E3%81%BE%E3%83%9A%E3%83%BC%E3%82%B8%E9%81%B7%E7%A7%BB%E3%81%99%E3%82%8B/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github-gist.min.css">
+  
+  
+  <link href="http://rugger-sr.github.io/index.xml" rel="alternate" type="application/rss+xml" title="spec-R" />
+  <link href="http://rugger-sr.github.io/index.xml" rel="feed" type="application/rss+xml" title="spec-R" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://rugger-sr.github.io/">spec-R</a></h1>
+        <h2>らが～の備忘録。</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="https://twitter.com/emi303" target="_blank">Twitter</a></li>
+          <li><a href="https://facebook.com/kouji.sekine" target="_blank">Facebook</a></li>
+          <li><a href="https://github.com/rugger-sr" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Chrome拡張で状態を保持したままページ遷移する</h1>
+      <div class="meta">
+        Oct 23, 2015 &nbsp;
+        
+          #<a href="/tags/chrome">Chrome</a>&nbsp;
+        
+          #<a href="/tags/extension">Extension</a>&nbsp;
+        
+          #<a href="/tags/javascript">Javascript</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<h2 id="chrome拡張でトグルボタン:38b31bf80c1d56d077e222c704c5e009">Chrome拡張でトグルボタン</h2>
+
+<p>ここ暫くChrome拡張を弄っているのだが、
+ツールバーのボタンを押すことで状態を切り替えられるような機能を実験してみたのでメモしておく。</p>
+
+<h2 id="browser-action:38b31bf80c1d56d077e222c704c5e009">browser_action</h2>
+
+<p>今回作成するのはツールバーのボタンである。</p>
+
+<p>適当なディレクトリを作成して以下の3つのファイルを作成する。</p>
+
+<ul>
+<li>manifest.json</li>
+<li>background.js</li>
+<li>content.js</li>
+</ul>
+
+<p>内部でjQueryを利用する場合はこちらも含めておく。
+現行の最新は2.1.4だった。</p>
+
+<ul>
+<li>jquery-2.1.4.min.js</li>
+</ul>
+
+<p>それぞれのファイルを以下のようにする</p>
+
+<h3 id="manifest-json:38b31bf80c1d56d077e222c704c5e009">manifest.json</h3>
+
+<pre><code>{
+    &quot;manifest_version&quot;: 2,
+    &quot;name&quot;: &quot;Chrome Extension Sapmle&quot;,
+    &quot;description&quot;: &quot;Chrome拡張のサンプルです。&quot;,
+    &quot;version&quot;: &quot;1.0&quot;,
+    &quot;permissions&quot;: [
+        &quot;activeTab&quot;,
+        &quot;tabs&quot;
+    ],
+    &quot;background&quot;: {
+        &quot;scripts&quot;: [&quot;background.js&quot;],
+        &quot;persistent&quot;: true
+    },
+    &quot;content_scripts&quot;: [
+    {
+        &quot;matches&quot;: [ &quot;&lt;all_urls&gt;&quot; ],
+        &quot;js&quot;: [&quot;jquery-2.1.4.min.js&quot;, &quot;content.js&quot;]
+    }
+    ],
+    &quot;browser_action&quot;: {
+        &quot;default_title&quot;: &quot;Chrome Extension Sapmle&quot;
+    }
+}
+</code></pre>
+
+<h3 id="background-js:38b31bf80c1d56d077e222c704c5e009">background.js</h3>
+
+<pre><code>// 状態保持
+var isTranslate = false;
+
+// ボタンが押されたら、状態を入れ替えてリロードする
+chrome.browserAction.onClicked.addListener(function(tab) {
+    isTranslate = !isTranslate;
+
+    // 状態をバッチとして表示する
+    if (isTranslate)
+        chrome.browserAction.setBadgeText({text : &quot;ON&quot; });
+    else
+        chrome.browserAction.setBadgeText({text: &quot;&quot;});
+
+    chrome.tabs.reload(tab.id);
+});
+
+// contents_scriptからのメッセージ処理
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (isTranslate) {
+            switch (request.cmd) {
+                case &quot;isTranslate&quot;: // 状態の取得
+                    sendResponse(isTranslate);
+                    return;
+                default:
+                    break;
+            }
+        }
+        sendResponse(&quot;&quot;);
+    }
+);
+</code></pre>
+
+<h3 id="content-js:38b31bf80c1d56d077e222c704c5e009">content.js</h3>
+
+<pre><code>$(document).ready(function(){
+    // ページロードの度にbackgroundに状態を確認
+    chrome.runtime.sendMessage(
+        { cmd: &quot;isTranslate&quot; },
+        function(isTranslate) {
+            if (isTranslate) {
+                // 有効だったら変換処理（&quot;spec-R&quot; を &quot;SPEC-R&quot; に置換ｗ）
+                var r = document.documentElement.innerHTML.replace(/spec-R/g, &quot;SPEC-R&quot;);
+                document.documentElement.innerHTML = r;
+            }
+        }
+    );
+});
+</code></pre>
+
+<h2 id="作成した拡張をchromeに追加する:38b31bf80c1d56d077e222c704c5e009">作成した拡張をChromeに追加する</h2>
+
+<p>（あくまでも開発モードです）</p>
+
+<p>Chromeの設定から「拡張機能」画面に移動する。</p>
+
+<p>右上の「ディベロッパーモード」のチェックをONにして、
+「パッケージ化されていない拡張機能を読み込む&hellip;」ボタンを押し、
+さっき作成したディレクトリを指定することで以下のようになるはず。</p>
+
+<p><img src="/images/2015-10-23_01.png" alt="Chrome拡張機能設定画面" />
+</p>
+
+<p>これで拡張が使えるようになった。</p>
+
+<h2 id="確認:38b31bf80c1d56d077e222c704c5e009">確認</h2>
+
+<p>まず無効状態。
+ちなみに三本線ボタンの左側にあるジグソーのピースみたいな奴が今回作った拡張のボタン。</p>
+
+<p><img src="/images/2015-10-23_02.png" alt="無効状態" />
+</p>
+
+<p>有効にしてみる。バッジがかわいい。</p>
+
+<p><img src="/images/2015-10-23_03.png" alt="有効状態" />
+</p>
+
+<p>ページ遷移しても有効になってる？</p>
+
+<p><img src="/images/2015-10-23_04.png" alt="ページ遷移後" />
+</p>
+
+<p>また無効にする。</p>
+
+<p><img src="/images/2015-10-23_05.png" alt="無効に戻す" />
+</p>
+
+<p>意外と楽ちん。</p>
+
+<h2 id="今後は:38b31bf80c1d56d077e222c704c5e009">今後は？</h2>
+
+<p>これでツールバーボタンのステートは複数のウィンドウでも維持されるが、
+内容はカレントウィンドウ（のタブ）しか変わらない。</p>
+
+<p>まぁ、今回は実験なので詰めは甘いが、
+background.jsから状態遷移時に他のタブに通知するとか、
+特定のタブ毎に状態を持つとか、
+色々対応の方法はあると思う。</p>
+
+<p>次回は、拡張から外部APIを呼んで見る予定。</p>
+
+<h2 id="雑感:38b31bf80c1d56d077e222c704c5e009">雑感</h2>
+
+<p>今後Edgeの拡張もChrome互換になるという話もあるし、
+この手のノウハウは溜めておいて損は無いと思う。</p>
+
+<p>というか、思ったより簡単に対応できるので楽しくなってきたｗ</p>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside> 
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'らが～';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+  <nav class="pagination">
+    
+      <span class="previous">&larr; <a href="http://rugger-sr.github.io/blog/2015/09/26/web_frontend/" rel="prev">WEB フロントエンドフレームワーク</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/profile.png" width="64" height="64"><br>
+      Written by らが～
+    </div>
+  </footer>
+
+
+</div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>  <link rel="stylesheet" href="/css/theme.css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-67799162-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
