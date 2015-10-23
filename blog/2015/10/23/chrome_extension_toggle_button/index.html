@@ -139,7 +139,7 @@ var isTranslate = false;
 chrome.browserAction.onClicked.addListener(function(tab) {
     isTranslate = !isTranslate;
 
-    // 状態をバッチとして表示する
+    // 状態をバッジとして表示する
     if (isTranslate)
         chrome.browserAction.setBadgeText({text : &quot;ON&quot; });
     else
