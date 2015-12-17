@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ruby on spec-R</title>
+    <link>http://rugger-sr.github.io/tags/ruby/</link>
+    <description>Recent content in Ruby on spec-R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <lastBuildDate>Thu, 17 Dec 2015 21:00:05 +0900</lastBuildDate>
+    <atom:link href="http://rugger-sr.github.io/tags/ruby/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>マヨイドーロ問題の解答コード</title>
+      <link>http://rugger-sr.github.io/blog/2015/12/17/mayoi/</link>
+      <pubDate>Thu, 17 Dec 2015 21:00:05 +0900</pubDate>
+      
+      <guid>http://rugger-sr.github.io/blog/2015/12/17/mayoi/</guid>
+      <description>
+
+&lt;h2 id=&#34;マヨイドーロ問題:5b4cb40939f41570a87a767b73ac9cbe&#34;&gt;マヨイドーロ問題&lt;/h2&gt;
+
+&lt;p&gt;結城浩さんが&lt;a href=&#34;https://codeiq.jp/&#34;&gt;CodeIQ&lt;/a&gt;で久しぶりに出題したので解いてみた。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://codeiq.jp/q/2549&#34;&gt;マヨイドーロ問題&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;締め切りも過ぎたので、私の解答ロジック&amp;amp;コードを公開してみます。&lt;/p&gt;
+
+&lt;h2 id=&#34;ロジック:5b4cb40939f41570a87a767b73ac9cbe&#34;&gt;ロジック&lt;/h2&gt;
+
+&lt;p&gt;最後は必ず左向きになる&amp;amp;スタートが右向きなので、
+Nが奇数の時の結果と (N+1) の結果は同一。
+なのでNは奇数しか考えない。&lt;/p&gt;
+
+&lt;p&gt;AまたはCで折り返した時はその後の折り返しパターンは2種類。
+Bで折り返した時はそのその後の折り返しパターンは1種類&lt;/p&gt;
+
+&lt;p&gt;ゴールは折り返し残り0回でAに来たタイミングとみなせるので、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;折り返し1 : A に向かうパターン[B,C]x1 の2パターン
+折り返し2 : C に向かうパターン[A,B]x1  + B に向かうパターン[A]x1 の3パターン
+折り返し3 : A に向かうパターン[B,C]x2  + B に向かうパターン[C]x1 の5パターン
+折り返し4 : C に向かうパターン[A,B]x3  + B に向かうパターン[A]x2 の8パターン
+折り返し5 : A に向かうパターン[B,C]x5  + B に向かうパターン[C]x3 の13パターン
+折り返し6 : C に向かうパターン[A,B]x8  + B に向かうパターン[A]x5 の21パターン
+折り返し7 : A に向かうパターン[B,C]x13 + B に向かうパターン[C]x8 の34パターン
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;として、折り返す数が奇数の時のパターン数を合計すると結果になる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1 : 2
+3 : 2 + 5 = 7
+5 : 2 + 5 + 13 = 20
+7 : 2 + 5 + 13 + 34 = 54
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で、各折り返し回数でのパターン数を見てみると…
+(1, 1,) 2, 3, 5, 8, 13, 21, 34&amp;hellip;
+これはひょっとして…フィボナッチ数列？&lt;/p&gt;
+
+&lt;p&gt;しかも、最終的な結果として、Nが奇数の時のパターン数合計は
+「N+3番目のフィボナッチ数 - 1」の値であることがわかる。&lt;/p&gt;
+
+&lt;p&gt;つまりは、以下の式で結果が求まる。
+P = fib(N + 3) - 1&lt;/p&gt;
+
+&lt;h2 id=&#34;解答コード-ruby-編:5b4cb40939f41570a87a767b73ac9cbe&#34;&gt;解答コード ruby 編&lt;/h2&gt;
+
+&lt;p&gt;最初Goで提出したら、入力値 1000 からuint64でもオーバーフローしてしまい失敗…。&lt;/p&gt;
+
+&lt;p&gt;ならrubyでやったれ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#! ruby -Ku
+
+# n個目のフィボナッチ数を取得（参考 : http://qiita.com/mathhun/items/4c117d33028a888f6fcf）
+def fib(n)
+	return n if n &amp;lt;= 1
+
+	n0, n1 = 0, 1
+	current = 0
+	(n - 1).times do
+		current = n0 + n1
+		n0, n1 = n1, current
+	end
+	current
+end
+
+def get_mayoi_pattern_count(n)
+	return 0 if n &amp;lt;= 0
+	n -= 1 if (n % 2) == 0
+	fib(n + 3) - 1
+end
+
+# 入出力
+while line = gets
+  n = line.chomp.to_i
+  v = get_mayoi_pattern_count(n)
+  puts &amp;quot;#{v}&amp;quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で無事正解100%。&lt;/p&gt;
+
+&lt;h2 id=&#34;解答コード-go-編:5b4cb40939f41570a87a767b73ac9cbe&#34;&gt;解答コード Go 編&lt;/h2&gt;
+
+&lt;p&gt;最初 ruby で正解した時に解説のPDFがあるのに気付かず、見逃してしまった…のだが、
+その後結城さんご本人より「もう一度解答投稿すれば見れますよ。」とのお言葉をいただく。&lt;/p&gt;
+
+&lt;p&gt;とゆー経緯で、前回オーバーフローして失敗した Go でやってみることにした。&lt;/p&gt;
+
+&lt;p&gt;Goでは、巨大な整数を扱うpackageとして &amp;lsquo;math/big&amp;rsquo; が用意されているのだが、
+言語仕様として演算子のオーバーロードが出来ないため 若干見辛くなっている。&lt;/p&gt;
+
+&lt;p&gt;が、昔はみんなこうだったよな…とか思いつつ無事完成。&lt;/p&gt;
+
+&lt;p&gt;コードは以下（提出時よりも若干整理しています）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;bufio&amp;quot;
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;math/big&amp;quot;
+	&amp;quot;os&amp;quot;
+	&amp;quot;strconv&amp;quot;
+)
+
+// フィボナッチ数を求める
+func fib(n int) (current *big.Int) {
+	current = big.NewInt(int64(n))
+	if n &amp;lt;= 1 {
+		return
+	}
+
+	n0 := big.NewInt(0)
+	n1 := big.NewInt(1)
+	for i := 0; i &amp;lt; n-1; i++ {
+		current.Add(n0, n1)
+		n0.Set(n1)
+		n1.Set(current)
+	}
+	return
+}
+
+// マヨイドーロパターン総数算出
+func getMayoiPatternCount(n int) (result *big.Int) {
+	result = big.NewInt(0)
+	if n &amp;lt;= 0 {
+		return
+	} else if (n % 2) == 0 {
+		n--
+	}
+
+	result.Sub(fib(n+3), big.NewInt(1))
+	return
+}
+
+func main() {
+	io := bufio.NewReader(os.Stdin)
+	for {
+		line, _, err := io.ReadLine()
+		if err != nil || len(line) &amp;lt;= 0 {
+			break
+		}
+
+		n, _ := strconv.ParseInt(string(line), 10, 32)
+		fmt.Println(getMayoiPatternCount(int(n)).String())
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;big.Int 型の各種メソッドは全てポインタを返すようになっているので、
+L22,L23 あたりの値の入れ替えの時に&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;n0,n1 = n1,current
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とかすると正しく動かない。&lt;/p&gt;
+
+&lt;p&gt;ま、値を設定するときはちゃんと Set しなさい。ということですな。&lt;/p&gt;
+
+&lt;h2 id=&#34;感想:5b4cb40939f41570a87a767b73ac9cbe&#34;&gt;感想&lt;/h2&gt;
+
+&lt;p&gt;上記Goの解答で無事に解説PDFを読めたのだが、
+ロジック的にも大体同じような感じだったので、一安心。&lt;/p&gt;
+
+&lt;p&gt;もっと詰めれば、フィボナッチ数列を求めるところを最適化可能だと思うのだが、
+今回これで全ケース0秒と出たので良しとした。そこ手抜きとか言わない。&lt;/p&gt;
+
+&lt;p&gt;結城さんの問題は、単純にロジックを実装するだけでなく、
+もう一捻りすることで気持ちよく解答する事ができる問題が多いので面白いなーと思う。&lt;/p&gt;
+
+&lt;p&gt;ま、いつもそれほど気持ちよくないのは私の思慮が足りないからですがｗ&lt;/p&gt;
+
+&lt;p&gt;CodeIQのこの手の問題は時折解いているのだが、
+普段仕事ではあまりアルゴリズムを考えることも無いので、
+ちょうど頭の体操になって良い。&lt;/p&gt;
+
+&lt;p&gt;今後もまた何かあれば挑戦してみたいと思う。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
